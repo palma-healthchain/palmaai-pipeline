@@ -13,6 +13,7 @@ import type {
 } from "./types";
 import { mapImmunization } from "./mappers/immunization.mapper";
 import { mapAllergy } from "./mappers/allergy.mapper";
+import { mapDiagnostic } from "./mappers/diagnostic.mapper";
 
 const PIPELINE_VERSION = "0.2.0";
 
@@ -43,6 +44,9 @@ export async function runPipeline(input: PipelineInput): Promise<PipelineOutput>
       break;
     case "AllergyIntolerance":
       result = await mapAllergy(resource, patient);
+      break;
+    case "Condition":
+      result = await mapDiagnostic(resource as any, patient);
       break;
     default:
       throw new Error(`Unsupported FHIR resource type: ${(resource as { resourceType: string }).resourceType}`);
